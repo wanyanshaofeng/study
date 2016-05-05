@@ -1,0 +1,59 @@
+1.首先打开C:/windows/system32/drives/etc/hosts文件,
+原先为:127.0.0.1 localhost 
+       127.0.0.1 localhost  
+修改为：127.0.0.1 blb.net
+        127.0.0.1 localhost
+保存退出.
+
+2.
+ (1)打开apache服务器httpd-vhosts.conf路径 D:\wamp\bin\apache\apache2.4.9\conf\extra\httpd-vhosts.conf
+ (2) 重新创建 VirtualHos
+   <VirtualHost *:80>
+    ServerAdmin webmaster@dummy-host2.example.com
+    DocumentRoot "d:/wamp/www/blb_v3_ecommerce"
+    ServerName  blb.net
+   </VirtualHost>
+   
+3. 打开apache服务器httpd.conf路径 D:\wamp\bin\apache\apache2.4.9\conf\httpd.conf 去掉 #Include conf/extra/httpd-vhosts.conf 
+ '#' ,启用httpd-vhosts.conf。
+ 
+上面是虚拟主机的配置。
+end
+
+伪静态的设置
+1.打开apache服务器,启用LoadModule rewrite_module modules/mod_rewrite.so 模块
+2.在
+<Directory "d:/wamp/www/">
+    #
+    # Possible values for the Options directive are "None", "All",
+    # or any combination of:
+    #   Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
+    #
+    # Note that "MultiViews" must be named *explicitly* --- "Options All"
+    # doesn't give it to you.
+    #
+    # The Options directive is both complicated and important.  Please see
+    # http://httpd.apache.org/docs/2.4/mod/core.html#options
+    # for more information.
+    #
+    Options Indexes FollowSymLinks
+     
+    #
+    # AllowOverride controls what directives may be placed in .htaccess files.
+    # It can be "All", "None", or any combination of the keywords:
+    #   AllowOverride FileInfo AuthConfig Limit
+    #
+    AllowOverride All
+    Order allow,deny      -------- 要添加内容
+    Allow from all  
+    #
+    # Controls who can get stuff from this server.
+    #
+
+#   onlineoffline tag - don't remove
+    Require all granted
+</Directory>
+
+3.网站的根目录建立.htaccess文件，然后在上面输入伪静态的规则
+
+上面是wamp设置伪静态解析。
